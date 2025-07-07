@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória - Restauração</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="main-menu" class="centered">
+        <img src="assets/logo_memory_game.png" alt="Logo Jogo da Memória" style="display:block;max-width:120px;margin:0 auto 4px auto;">
+        <h1>
+            Jogo da Memória<br>
+            <span style="font-weight:400;">Edição Restauração</span>
+        </h1>
+        <div class="input-row">
+            <label for="players">Jogadores:</label>
+            <select id="players">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+        <div id="player-names"></div>
+        <div class="input-row">
+            <label for="cards">Cartas (pares):</label>
+            <input type="number" id="cards" min="2" max="25" value="8">
+        </div>
+        <br>
+        <button id="start-btn">Começar</button>
+    </div>
+    <div id="game-area" class="hidden">
+        <div id="board"></div>
+        <div id="header-area">
+            <div id="scoreboard"></div>
+            <div id="turn-indicator"></div>
+        </div>
+    </div>
+    <button id="restart-btn">Reiniciar</button>
+    <div id="popup-correct">Correto! Você ganhou um turno extra!</div>
+    <div id="end-screen" class="hidden">
+        <div id="final-scoreboard"></div>
+        <h2 id="winner-text"></h2>
+        <button id="play-again-btn">Jogar Novamente</button>
+    </div>
+    <script src="memory_game.js"></script>
+</body>
+</html>
