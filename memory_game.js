@@ -62,21 +62,27 @@ function createBoard() {
 function renderBoard() {
     let cols = Math.ceil(Math.sqrt(numPairs * 2));
     let rows = Math.ceil((numPairs * 2) / cols);
-    // Justifica o grid para mais cartas, centraliza para poucas
-    if (numPairs * 2 > 16) {
-        boardDiv.style.justifyContent = 'stretch';
-    } else {
-        boardDiv.style.justifyContent = 'center';
-    }
+    boardDiv.style.justifyContent = '';
+    boardDiv.style.width = '';
+    boardDiv.style.height = '';
+    boardDiv.style.maxWidth = '';
+    boardDiv.style.maxHeight = '';
+    boardDiv.style.overflow = '';
     boardDiv.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     boardDiv.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
     boardDiv.innerHTML = '';
     for (let i = 0; i < board.length; i++) {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = [
+            'card',
+            'aspect-square',
+            'w-full h-full',
+            'flex items-center justify-center bg-[#b8c1ec] rounded-xl shadow-md cursor-pointer select-none relative transition-transform duration-100 overflow-hidden',
+        ].join(' ');
         if (matched[i]) card.classList.add('matched');
         let img = document.createElement('img');
         img.draggable = false;
+        img.className = 'w-[96%] h-[96%] object-contain pointer-events-none';
         if (flipped.includes(i) || matched[i]) {
             card.classList.add('flipped');
             img.src = images[board[i]];
@@ -93,18 +99,21 @@ function renderPlayerInputs() {
     const n = parseInt(document.getElementById('players').value);
     playerNamesDiv.innerHTML = '';
     for (let i = 0; i < n; i++) {
+        const row = document.createElement('div');
+        row.className = 'flex items-center gap-2 mb-2';
         const label = document.createElement('label');
         label.textContent = `Nome do Jogador ${i+1}:`;
         label.setAttribute('for', `player-name-${i}`);
+        label.className = 'text-[#eebbc3] text-base font-medium mr-2';
         const input = document.createElement('input');
         input.type = 'text';
         input.id = `player-name-${i}`;
-        input.className = 'player-name-input';
+        input.className = 'player-name-input w-[120px] text-base px-3 py-2 rounded-lg border border-[#b8c1ec] bg-[#232946] text-white focus:border-[#eebbc3]';
         input.value = `Jogador ${i+1}`;
         input.maxLength = 16;
-        playerNamesDiv.appendChild(label);
-        playerNamesDiv.appendChild(input);
-        playerNamesDiv.appendChild(document.createElement('br'));
+        row.appendChild(label);
+        row.appendChild(input);
+        playerNamesDiv.appendChild(row);
     }
 }
 

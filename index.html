@@ -5,43 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da Memória - Restauração</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div id="main-menu" class="centered">
-        <img src="assets/logo_memory_game.png" alt="Logo Jogo da Memória" style="display:block;max-width:120px;margin:0 auto 4px auto;">
-        <h1>
+<body class="bg-[#232946] bg-[url('assets/background.jpg')] bg-no-repeat bg-right bg-fixed bg-cover text-white font-sans m-0 p-0 overflow-hidden min-h-screen">
+    <div id="main-menu" class="flex flex-col items-center justify-start bg-[#181f2a]/[.92] rounded-3xl px-8 pt-7 pb-3 shadow-2xl min-w-[320px] max-w-[380px] fixed top-1/2 left-[5vw] -translate-y-1/2 z-[100] animate-fadeIn">
+        <img src="assets/logo_memory_game.png" alt="Logo Jogo da Memória" class="block max-w-[120px] mx-auto mb-1 pt-7" />
+        <h1 class="text-2xl font-bold text-[#eebbc3] mb-1 drop-shadow">
             Jogo da Memória<br>
-            <span style="font-weight:400;">Edição Restauração</span>
+            <span class="font-normal">Edição Restauração</span>
         </h1>
-        <div class="input-row">
-            <label for="players">Jogadores:</label>
-            <select id="players">
+        <div class="flex items-center w-full mb-3">
+            <label for="players" class="text-base text-[#b8c1ec] font-medium mr-2">Jogadores:</label>
+            <select id="players" class="w-[70px] text-base px-3 py-2 rounded-lg border border-[#b8c1ec] bg-[#232946] text-white focus:border-[#eebbc3]">
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
             </select>
         </div>
         <div id="player-names"></div>
-        <div class="input-row">
-            <label for="cards">Cartas (pares):</label>
-            <input type="number" id="cards" min="2" max="16" value="8">
+        <div class="flex items-center w-full mb-3">
+            <label for="cards" class="text-base text-[#b8c1ec] font-medium mr-2">Cartas (pares):</label>
+            <input type="number" id="cards" min="2" max="25" value="8" class="w-[70px] text-base px-3 py-2 rounded-lg border border-[#b8c1ec] bg-[#232946] text-white focus:border-[#eebbc3]" />
         </div>
-        <br>
-        <button id="start-btn">Começar</button>
+        <button id="start-btn" class="mt-6 px-8 py-3 text-base rounded-lg bg-[#eebbc3] text-[#232946] font-semibold hover:bg-[#ffd6e0] transition">Começar</button>
     </div>
-    <div id="game-area" class="hidden">
-        <div id="board"></div>
-        <div id="header-area">
-            <div id="scoreboard"></div>
-            <div id="turn-indicator"></div>
+    <div id="game-area" class="hidden flex flex-row items-start max-w-[1920px] mx-auto min-h-[80vh] relative p-16 pt-16 pb-6">
+        <div id="board" class="flex-1 grid gap-2 w-full h-[80vh] max-w-full max-h-[80vh] overflow-auto mx-auto mt-4 mb-6"></div>
+        <div id="header-area" class="min-w-[260px] ml-8 flex flex-col items-start z-10 bg-[#181f2a]/[.92] rounded-2xl shadow-lg p-7 gap-2">
+            <div id="scoreboard" class="flex flex-col items-start gap-2 mb-2 text-lg text-[#eebbc3] drop-shadow"></div>
+            <div id="turn-indicator" class="text-base text-white font-semibold drop-shadow"></div>
         </div>
+        <button id="restart-btn" class="fixed right-10 bottom-10 px-9 py-3 text-lg rounded-2xl bg-[#181f2a]/[.92] text-[#eebbc3] border border-[#eebbc3] shadow-lg font-semibold hover:bg-[#2d3250] hover:border-[#ffd6e0] hover:text-[#ffd6e0] transition">Reiniciar</button>
     </div>
-    <button id="restart-btn">Reiniciar</button>
-    <div id="popup-correct">Correto! Você ganhou um turno extra!</div>
-    <div id="end-screen" class="hidden">
-        <div id="final-scoreboard"></div>
-        <h2 id="winner-text"></h2>
-        <button id="play-again-btn">Jogar Novamente</button>
+    <div id="popup-correct" class="fixed top-1/2 left-1/2 bg-[#181f2a]/[.97] text-[#eebbc3] border-2 border-[#eebbc3] rounded-2xl shadow-2xl px-12 py-8 text-2xl font-bold text-center z-[9999] opacity-0 pointer-events-none transition-opacity" style="transform:translate(-50%,-50%)">Correto! Você ganhou um turno extra!</div>
+    <div id="end-screen" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#181f2a]/[.96] flex flex-col items-center justify-center z-[2000] gap-8 animate-fadeIn">
+        <div id="final-scoreboard" class="bg-[#181f2a]/[.97] rounded-2xl shadow-2xl border-2 border-[#eebbc3] px-12 pt-8 pb-6 min-w-[320px] max-w-[420px] flex flex-col items-center gap-4 mb-3"></div>
+        <h2 id="winner-text" class="text-[#ffd6e0] text-2xl font-bold mb-3 text-center drop-shadow"></h2>
+        <button id="play-again-btn" class="mt-4 px-9 py-3 text-lg rounded-xl bg-[#eebbc3] text-[#232946] font-semibold shadow-md hover:bg-[#ffd6e0] transition">Jogar Novamente</button>
     </div>
     <script src="memory_game.js"></script>
 </body>
