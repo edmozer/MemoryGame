@@ -62,27 +62,25 @@ function createBoard() {
 function renderBoard() {
     let cols = Math.ceil(Math.sqrt(numPairs * 2));
     let rows = Math.ceil((numPairs * 2) / cols);
+    boardDiv.className = 'grid gap-2 bg-transparent w-full h-full';
     boardDiv.style.justifyContent = '';
     boardDiv.style.width = '';
     boardDiv.style.height = '';
     boardDiv.style.maxWidth = '';
     boardDiv.style.maxHeight = '';
     boardDiv.style.overflow = '';
-    boardDiv.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    boardDiv.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+    boardDiv.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+    boardDiv.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
     boardDiv.innerHTML = '';
+
     for (let i = 0; i < board.length; i++) {
         const card = document.createElement('div');
-        card.className = [
-            'card',
-            'aspect-square',
-            'w-full h-full',
-            'flex items-center justify-center bg-[#b8c1ec] rounded-xl shadow-md cursor-pointer select-none relative transition-transform duration-100 overflow-hidden',
-        ].join(' ');
+        card.className = `memory-card flex items-center justify-center w-full h-full max-w-[64px] max-h-[64px] aspect-square rounded-xl bg-[#232946] shadow-md select-none transition-all`;
+        // Remove qualquer ajuste manual de tamanho
         if (matched[i]) card.classList.add('matched');
         let img = document.createElement('img');
         img.draggable = false;
-        img.className = 'w-[96%] h-[96%] object-contain pointer-events-none';
+        img.className = 'w-full h-full object-contain pointer-events-none bg-transparent';
         if (flipped.includes(i) || matched[i]) {
             card.classList.add('flipped');
             img.src = images[board[i]];

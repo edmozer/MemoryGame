@@ -17,3 +17,31 @@
 }
 
 /* Se precisar de algo MUITO específico, coloque aqui. O resto é Tailwind no HTML. */
+
+/* Limite máximo para os cards do grid do jogo da memória */
+#board > * {
+  width: 100%;
+  height: 100%;
+  max-width: 250px;
+  max-height: 250px;
+  aspect-ratio: 1/1;
+  border-radius: 0.75rem;
+  background: #232946;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: all 0.2s;
+  border: none;
+}
+#board > * img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.75rem; /* igual ao card */
+  display: block;
+}
+#board {
+  background: transparent;
+}
