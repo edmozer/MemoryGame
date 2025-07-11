@@ -244,7 +244,7 @@ function startGame() {
     endScreen.classList.add('hidden');
     gameArea.classList.remove('hidden');
     gameArea.classList.add('active');
-    document.getElementById('footer-scoreboard').style.display = 'flex';
+    // O footer-scoreboard agora é controlado pela classe .active do game-area
     document.getElementById('restart-btn').style.display = 'block';
     renderBoard();
     renderScoreboard();
@@ -316,17 +316,15 @@ document.getElementById('start-btn').onclick = startGame;
 document.getElementById('restart-btn').onclick = () => {
     mainMenu.classList.remove('hidden');
     gameArea.classList.add('hidden');
-    gameArea.classList.remove('active');
+    gameArea.classList.remove('active'); // Isso já vai ocultar o footer-scoreboard
     endScreen.classList.add('hidden');
-    document.getElementById('footer-scoreboard').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
 };
 document.getElementById('play-again-btn').onclick = () => {
     mainMenu.classList.remove('hidden');
     gameArea.classList.add('hidden');
-    gameArea.classList.remove('active');
+    gameArea.classList.remove('active'); // Isso já vai ocultar o footer-scoreboard
     endScreen.classList.add('hidden');
-    document.getElementById('footer-scoreboard').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
 };
 
