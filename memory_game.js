@@ -12,6 +12,78 @@ let lockBoard = false;
 let images = [];
 let backImage = 'assets/back-min.jpg';
 
+// Variáveis do timer
+let gameStartTime = 0;
+let gameTimer = null;
+let finalTime = '';
+const timerElement = document.getElementById('timer');
+
+// Funções do timer
+function startTimer() {
+    if (numPlayers === 1) {
+        gameStartTime = Date.now();
+        timerElement.classList.remove('hidden');
+        gameTimer = setInterval(updateTimer, 1000);
+    }
+}
+
+function stopTimer() {
+    if (gameTimer) {
+        clearInterval(gameTimer);
+        gameTimer = null;
+        finalTime = timerElement.textContent;
+    }
+}
+
+function updateTimer() {
+    const elapsedTime = Math.floor((Date.now() - gameStartTime) / 1000);
+    const minutes = Math.floor(elapsedTime / 60);
+    const seconds = elapsedTime % 60;
+    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function resetTimer() {
+    stopTimer();
+    timerElement.classList.add('hidden');
+    timerElement.textContent = '00:00';
+    gameStartTime = 0;
+    finalTime = '';
+}
+
+// Validação do número de pares
+const cardsInput = document.getElementById('cards');
+cardsInput.addEventListener('input', function() {
+    let value = parseInt(this.value);
+    if (isNaN(value)) {
+        this.value = 8; // valor padrão
+        numPairs = 8;
+    } else {
+        // Força o valor entre 2 e 25
+        if (value < 2) {
+            this.value = 2;
+            numPairs = 2;
+        } else if (value > 25) {
+            this.value = 25;
+            numPairs = 25;
+        } else {
+            numPairs = value;
+        }
+    }
+});
+
+// Previne que o usuário digite valores inválidos
+cardsInput.addEventListener('keydown', function(e) {
+    // Permite apenas: números, backspace, delete, setas
+    if (!((e.key >= '0' && e.key <= '9') || 
+          e.key === 'Backspace' || 
+          e.key === 'Delete' || 
+          e.key === 'ArrowLeft' || 
+          e.key === 'ArrowRight' || 
+          e.key === 'Tab')) {
+        e.preventDefault();
+    }
+});
+
 const mainMenu = document.getElementById('main-menu');
 const gameArea = document.getElementById('game-area');
 const endScreen = document.getElementById('end-screen');
@@ -172,7 +244,8 @@ function handleCardClick(idx) {
 function showCorrectPopup(isLastPair = false) {
     const popup = document.getElementById('popup-correct');
     if (!popup) return;
-    popup.textContent = isLastPair ? 'Correto!' : 'Correto! Você ganhou um turno extra!';
+    // No modo single player, mostra apenas "Correto!"
+    popup.textContent = numPlayers === 1 || isLastPair ? 'Correto!' : 'Correto! Você ganhou um turno extra!';
     popup.classList.add('active');
     setTimeout(() => {
         popup.classList.remove('active');
@@ -226,18 +299,26 @@ function renderFinalScoreboard() {
 }
 
 function showEndScreen() {
-    gameArea.classList.add('hidden');
-    setTimeout(() => {
+    if (gameArea.classList.contains('active')) {
+        const maxScore = Math.max(...scores);
         endScreen.classList.remove('hidden');
         renderFinalScoreboard();
-        let maxScore = Math.max(...scores);
-        let winners = scores.map((s, i) => s === maxScore ? players[i] : null).filter(x => x);
-        if (winners.length === 1) {
-            winnerText.textContent = `Vencedor: ${winners[0]}`;
+        
+        // Para o timer se estiver rodando (modo single player)
+        stopTimer();
+        
+        // No modo single player, mostra o tempo ao invés do vencedor
+        if (numPlayers === 1) {
+            winnerText.textContent = `Tempo: ${finalTime}`;
         } else {
-            winnerText.textContent = `Empate entre: ${winners.join(', ')}`;
+            let winners = scores.map((s, i) => s === maxScore ? players[i] : null).filter(x => x);
+            if (winners.length === 1) {
+                winnerText.textContent = `Vencedor: ${winners[0]}`;
+            } else {
+                winnerText.textContent = `Empate entre: ${winners.join(', ')}`;
+            }
         }
-    }, 1200); 
+    }
 }
 
 function startGame() {
@@ -245,6 +326,10 @@ function startGame() {
     numPairs = parseInt(document.getElementById('cards').value);
     if (isNaN(numPairs) || numPairs < 2) numPairs = 2;
     if (numPairs > 25) numPairs = 25;
+    
+    // Reset do timer
+    resetTimer();
+    
     players = [];
     for (let i = 0; i < numPlayers; i++) {
         const nameInput = document.getElementById(`player-name-${i}`);
@@ -261,6 +346,10 @@ function startGame() {
     endScreen.classList.add('hidden');
     gameArea.classList.remove('hidden');
     gameArea.classList.add('active');
+    
+    // Inicia o timer se for modo single player
+    startTimer();
+    
     // O footer-scoreboard agora é controlado pela classe .active do game-area
     document.getElementById('restart-btn').style.display = 'block';
     ajustarGridBoard(numPairs * 2); // Primeiro ajusta o grid
@@ -343,6 +432,7 @@ document.getElementById('restart-btn').onclick = () => {
     gameArea.classList.remove('active'); // Isso já vai ocultar o footer-scoreboard
     endScreen.classList.add('hidden');
     document.getElementById('restart-btn').style.display = 'none';
+    resetTimer(); // Reseta o timer
 };
 document.getElementById('play-again-btn').onclick = () => {
     mainMenu.classList.remove('hidden');
@@ -350,6 +440,7 @@ document.getElementById('play-again-btn').onclick = () => {
     gameArea.classList.remove('active'); // Isso já vai ocultar o footer-scoreboard
     endScreen.classList.add('hidden');
     document.getElementById('restart-btn').style.display = 'none';
+    resetTimer(); // Reseta o timer
 };
 
 
