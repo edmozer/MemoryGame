@@ -9,13 +9,15 @@
 </head>
 <body class="bg-[#232946] bg-[url('assets/background.jpg')] bg-no-repeat bg-right bg-fixed bg-cover text-white font-sans m-0 p-0 overflow-hidden min-h-screen">
     <div id="main-menu" class="flex flex-col items-center justify-start bg-[#181f2a]/[.92] rounded-3xl px-8 pt-7 pb-3 shadow-2xl min-w-[320px] max-w-[380px] fixed top-1/2 left-[5vw] -translate-y-1/2 z-[100] animate-fadeIn">
-        <img src="assets/logo_memory_game.png" alt="Logo Jogo da Memória" class="block max-w-[120px] mx-auto mb-1 pt-7" />
+        <div class="logo-container">
+            <img src="assets/logo_memory_game.png" alt="Logo Jogo da Memória" class="block max-w-[120px] mx-auto mb-1 pt-7" />
+        </div>
         <h1 class="text-2xl font-bold text-[#eebbc3] mb-1 drop-shadow">
             Jogo da Memória<br>
             <span class="font-normal">Edição Restauração</span>
         </h1>
-        <div class="flex items-center w-full mb-3">
-            <label for="players" class="text-base text-[#b8c1ec] font-medium mr-2">Jogadores:</label>
+        <div class="form-row">
+            <label for="players">Jogadores:</label>
             <select id="players" class="w-[70px] text-base px-3 py-2 rounded-lg border border-[#b8c1ec] bg-[#232946] text-white focus:border-[#eebbc3]">
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -23,8 +25,8 @@
             </select>
         </div>
         <div id="player-names"></div>
-        <div class="flex items-center w-full mb-3">
-            <label for="cards" class="text-base text-[#b8c1ec] font-medium mr-2">Cartas (pares):</label>
+        <div class="form-row">
+            <label for="cards">Cartas (pares):</label>
             <input type="number" id="cards" min="2" max="25" value="8" class="w-[70px] text-base px-3 py-2 rounded-lg border border-[#b8c1ec] bg-[#232946] text-white focus:border-[#eebbc3]" />
         </div>
         <button id="start-btn" class="mt-6 px-8 py-3 text-base rounded-lg bg-[#eebbc3] text-[#232946] font-semibold hover:bg-[#ffd6e0] transition">Começar</button>
