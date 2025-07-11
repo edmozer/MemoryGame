@@ -31,12 +31,15 @@
     </div>
     <div id="game-area" class="hidden flex flex-row justify-between items-start max-w-[1920px] mx-auto min-h-[80vh] max-h-screen relative p-6 pt-8 pb-4 overflow-hidden">
         <div id="board" class="grid w-full max-w-[420px] max-h-[420px] aspect-square grid-cols-4 grid-rows-4 gap-2 place-items-center mx-auto mt-4 mb-6 flex-shrink-0 bg-transparent"></div>
-        <div id="header-area" class="min-w-[200px] flex flex-col items-start z-10 bg-[#181f2a]/[.92] rounded-2xl shadow-lg p-7 gap-2 ml-5 mr-0">
-            <div id="scoreboard" class="flex flex-col items-start gap-2 mb-2 text-lg text-[#eebbc3] drop-shadow"></div>
-            <div id="turn-indicator" class="text-base text-white font-semibold drop-shadow"></div>
-        </div>
-        <button id="restart-btn" class="fixed right-10 bottom-10 px-9 py-3 text-lg rounded-2xl bg-[#181f2a]/[.92] text-[#eebbc3] border border-[#eebbc3] shadow-lg font-semibold hover:bg-[#2d3250] hover:border-[#ffd6e0] hover:text-[#ffd6e0] transition">Reiniciar</button>
     </div>
+    <div id="footer-scoreboard" class="w-full fixed bottom-0 left-0 bg-[#181f2a]/[.92] flex flex-row items-center justify-center gap-8 py-4 px-2 z-40 shadow-2xl">
+        <button id="toggle-footer-scoreboard" class="absolute right-4 top-2 w-8 h-8 flex items-center justify-center text-2xl text-[#eebbc3] bg-transparent border-none p-0 m-0 z-50" aria-label="Colapsar placar">▼</button>
+        <div id="footer-scoreboard-content" class="flex flex-row items-center justify-center gap-8 w-full">
+            <div id="scoreboard" class="flex flex-row items-center gap-6 text-lg text-[#eebbc3] drop-shadow"></div>
+            <div id="turn-indicator" class="text-base text-white font-semibold drop-shadow ml-6"></div>
+        </div>
+    </div>
+    <button id="restart-btn" class="fixed right-10 bottom-10 px-9 py-3 text-lg rounded-2xl bg-[#181f2a]/[.92] text-[#eebbc3] border border-[#eebbc3] shadow-lg font-semibold hover:bg-[#2d3250] hover:border-[#ffd6e0] hover:text-[#ffd6e0] transition">Reiniciar</button>
     <div id="popup-correct" class="fixed top-1/2 left-1/2 bg-[#181f2a]/[.97] text-[#eebbc3] border-2 border-[#eebbc3] rounded-2xl shadow-2xl px-12 py-8 text-2xl font-bold text-center z-[9999] opacity-0 pointer-events-none transition-opacity" style="transform:translate(-50%,-50%)">Correto! Você ganhou um turno extra!</div>
     <div id="end-screen" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#181f2a]/[.96] flex flex-col items-center justify-center z-[2000] gap-8 animate-fadeIn">
         <div id="final-scoreboard" class="bg-[#181f2a]/[.97] rounded-2xl shadow-2xl border-2 border-[#eebbc3] px-12 pt-8 pb-6 min-w-[320px] max-w-[420px] flex flex-col items-center gap-4 mb-3"></div>

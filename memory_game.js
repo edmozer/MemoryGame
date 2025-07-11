@@ -75,12 +75,12 @@ function renderBoard() {
 
     for (let i = 0; i < board.length; i++) {
         const card = document.createElement('div');
-        card.className = `memory-card flex items-center justify-center w-full h-full max-w-[64px] max-h-[64px] aspect-square rounded-xl bg-[#232946] shadow-md select-none transition-all`;
+        card.className = `memory-card aspect-square rounded-xl bg-[#232946] shadow-md select-none transition-all flex`;
         // Remove qualquer ajuste manual de tamanho
         if (matched[i]) card.classList.add('matched');
         let img = document.createElement('img');
         img.draggable = false;
-        img.className = 'w-full h-full object-contain pointer-events-none bg-transparent';
+        img.className = 'w-full h-full object-cover pointer-events-none bg-transparent';
         if (flipped.includes(i) || matched[i]) {
             card.classList.add('flipped');
             img.src = images[board[i]];
@@ -237,11 +237,39 @@ function startGame() {
     endScreen.classList.add('hidden');
     gameArea.classList.remove('hidden');
     gameArea.classList.add('active');
+    document.getElementById('footer-scoreboard').style.display = 'flex';
     document.getElementById('restart-btn').style.display = 'block';
     renderBoard();
     renderScoreboard();
     renderTurn();
+    ajustarGridBoard(numPairs * 2); // Ajusta o grid do board
 }
+
+function ajustarGridBoard(numCards) {
+  const board = document.getElementById('board');
+  if (!board) return;
+  // Para poucos cards, grid mais "apertado" para cards grandes
+  let bestCols = 1, bestRows = numCards, bestSize = 0;
+  const boardSize = board.offsetWidth || 600;
+  for (let cols = 1; cols <= numCards; cols++) {
+    const rows = Math.ceil(numCards / cols);
+    const cardSize = Math.min(boardSize / cols, boardSize / rows);
+    if (cardSize > bestSize) {
+      bestSize = cardSize;
+      bestCols = cols;
+      bestRows = rows;
+    }
+  }
+  board.style.gridTemplateColumns = `repeat(${bestCols}, 1fr)`;
+  board.style.gridTemplateRows = `repeat(${bestRows}, 1fr)`;
+}
+
+// Exemplo de uso: chame ajustarGridBoard(cards.length) sempre que o board for montado
+//
+// Localize o ponto do seu código onde as cartas são renderizadas no board e adicione:
+// ajustarGridBoard(cards.length);
+//
+// Se quiser, posso localizar e inserir automaticamente esse ponto para você.
 
 document.getElementById('start-btn').onclick = startGame;
 document.getElementById('restart-btn').onclick = () => {
@@ -249,6 +277,7 @@ document.getElementById('restart-btn').onclick = () => {
     gameArea.classList.add('hidden');
     gameArea.classList.remove('active');
     endScreen.classList.add('hidden');
+    document.getElementById('footer-scoreboard').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
 };
 document.getElementById('play-again-btn').onclick = () => {
@@ -256,6 +285,7 @@ document.getElementById('play-again-btn').onclick = () => {
     gameArea.classList.add('hidden');
     gameArea.classList.remove('active');
     endScreen.classList.add('hidden');
+    document.getElementById('footer-scoreboard').style.display = 'none';
     document.getElementById('restart-btn').style.display = 'none';
 };
 
@@ -264,4 +294,28 @@ window.addEventListener('keydown', (e) => {
     if (!mainMenu.classList.contains('hidden') && (e.key === 'Enter' || e.key === ' ')) {
         startGame();
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  const toggleBtn = document.getElementById('toggle-scoreboard');
+  const scoreboardContent = document.getElementById('scoreboard-content');
+  let collapsed = false;
+  if (toggleBtn && scoreboardContent) {
+    toggleBtn.addEventListener('click', function() {
+      collapsed = !collapsed;
+      scoreboardContent.classList.toggle('collapsed', collapsed);
+      toggleBtn.innerText = collapsed ? '▼' : '▲';
+    });
+  }
+  // ...placar lateral...
+  const toggleFooterBtn = document.getElementById('toggle-footer-scoreboard');
+  const footerScoreboardContent = document.getElementById('footer-scoreboard-content');
+  let footerCollapsed = false;
+  if (toggleFooterBtn && footerScoreboardContent) {
+    toggleFooterBtn.addEventListener('click', function() {
+      footerCollapsed = !footerCollapsed;
+      footerScoreboardContent.classList.toggle('collapsed', footerCollapsed);
+      toggleFooterBtn.innerText = footerCollapsed ? '▲' : '▼';
+    });
+  }
 });
