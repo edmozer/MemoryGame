@@ -10,7 +10,7 @@ let flipped = [];
 let matched = [];
 let lockBoard = false;
 let images = [];
-let backImage = 'assets/back.jpg';
+let backImage = 'assets/back-min.jpg';
 
 const mainMenu = document.getElementById('main-menu');
 const gameArea = document.getElementById('game-area');
@@ -39,7 +39,7 @@ function preloadImages(qtd) {
     // Seleciona qtd imagens aleatórias para os pares
     images = [];
     for (let i = 0; i < qtd; i++) {
-        images.push(`assets/img${imgIndexes[i]}.jpg`);
+        images.push(`assets/img${imgIndexes[i]}-min.jpg`);
     }
 }
 
@@ -122,7 +122,7 @@ function renderPlayerInputs() {
     playerNamesDiv.innerHTML = '';
     for (let i = 0; i < n; i++) {
         const row = document.createElement('div');
-        row.className = 'flex items-center gap-2 mb-2';
+        row.className = 'form-row';
         const label = document.createElement('label');
         label.textContent = `Nome do Jogador ${i+1}:`;
         label.setAttribute('for', `player-name-${i}`);
@@ -130,7 +130,7 @@ function renderPlayerInputs() {
         const input = document.createElement('input');
         input.type = 'text';
         input.id = `player-name-${i}`;
-        input.className = 'player-name-input w-[120px] text-base px-3 py-2 rounded-lg border border-[#b8c1ec] bg-[#232946] text-white focus:border-[#eebbc3]';
+        input.className = 'player-name-input w-[184px] h-[40px] text-base px-3 rounded-lg border border-[#b8c1ec] bg-[#232946] text-white focus:border-[#eebbc3]';
         input.value = `Jogador ${i+1}`;
         input.maxLength = 16;
         row.appendChild(label);
@@ -381,4 +381,45 @@ document.addEventListener('DOMContentLoaded', function() {
       toggleFooterBtn.innerText = footerCollapsed ? '▲' : '▼';
     });
   }
+});
+
+// Modal Sobre
+const aboutBtn = document.getElementById('about-btn');
+const aboutModal = document.getElementById('about-modal');
+const closeAboutBtn = document.getElementById('close-about');
+const toggleTechBtn = document.getElementById('toggle-tech');
+const techContent = document.getElementById('tech-content');
+const techArrow = toggleTechBtn.querySelector('span');
+
+// Event listeners para o modal Sobre
+aboutBtn.addEventListener('click', () => {
+    aboutModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+});
+
+closeAboutBtn.addEventListener('click', () => {
+    aboutModal.classList.add('hidden');
+    document.body.style.overflow = '';
+});
+
+// Fecha o modal ao clicar fora dele
+aboutModal.addEventListener('click', (e) => {
+    if (e.target === aboutModal) {
+        aboutModal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+});
+
+// Toggle para a seção técnica
+toggleTechBtn.addEventListener('click', () => {
+    techContent.classList.toggle('hidden');
+    techArrow.style.transform = techContent.classList.contains('hidden') ? '' : 'rotate(180deg)';
+});
+
+// Fecha o modal com a tecla ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !aboutModal.classList.contains('hidden')) {
+        aboutModal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
 });
