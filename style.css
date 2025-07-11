@@ -16,6 +16,19 @@
     display: none !important;
 }
 
+/* Estilos do popup de feedback */
+#popup-correct {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+#popup-correct.active {
+    opacity: 1;
+    animation: popIn 0.4s ease-out forwards;
+}
+
 /* Se precisar de algo MUITO específico, coloque aqui. O resto é Tailwind no HTML. */
 
 /* Limite máximo para os cards do grid do jogo da memória */
