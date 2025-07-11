@@ -161,10 +161,10 @@
   outline: 2px solid #eebbc3;
 }
 #restart-btn {
+  display: none;
   position: fixed;
   right: 2.5rem;
   bottom: 5.5rem;
-  /* ...restante das classes já existentes... */
 }
 @media (max-width: 600px) {
   #footer-scoreboard {
