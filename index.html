@@ -3,11 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jogo da Memória - Edição Restauração: Um jogo educativo sobre a Restauração do Evangelho de Jesus Cristo">
+    <meta name="theme-color" content="#232946">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Jogo da Memória - Restauração">
+    <meta property="og:description" content="Um jogo educativo sobre a Restauração do Evangelho de Jesus Cristo">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/logo_memory_game-min.png">
+    
     <title>Jogo da Memória - Restauração</title>
+    <link rel="stylesheet" href="dist/output.css">
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#232946] bg-[url('assets/background.jpg')] bg-no-repeat bg-right bg-fixed bg-cover text-white font-sans m-0 p-0 overflow-hidden min-h-screen">
+<body class="bg-[#232946] bg-no-repeat bg-right bg-fixed bg-cover text-white font-sans m-0 p-0 overflow-hidden min-h-screen">
     <div id="main-menu" class="flex flex-col items-center justify-start bg-[#181f2a]/[.92] rounded-3xl px-8 pt-7 pb-3 shadow-2xl min-w-[320px] max-w-[380px] fixed top-1/2 left-[5vw] -translate-y-1/2 z-[100] animate-fadeIn">
         <div class="logo-container">
             <img src="assets/logo_memory_game-min.png" alt="Logo Jogo da Memória" class="block max-w-[120px] mx-auto mb-1 pt-7" />
@@ -42,17 +51,17 @@
         </div>
     </div>
     <button id="restart-btn" class="fixed right-10 bottom-10 px-9 py-3 text-lg rounded-2xl bg-[#181f2a]/[.92] text-[#eebbc3] border border-[#eebbc3] shadow-lg font-semibold hover:bg-[#2d3250] hover:border-[#ffd6e0] hover:text-[#ffd6e0] transition">Reiniciar</button>
-    <div id="popup-correct" class="fixed top-1/2 left-1/2 bg-[#181f2a]/[.97] text-[#eebbc3] border-2 border-[#eebbc3] rounded-2xl shadow-2xl px-12 py-8 text-2xl font-bold text-center z-[9999] opacity-0 pointer-events-none transition-opacity" style="transform:translate(-50%,-50%)">Correto! Você ganhou um turno extra!</div>
+    <div id="popup-correct" class="fixed top-1/2 left-1/2 bg-[#181f2a]/[.97] text-[#eebbc3] border-2 border-[#eebbc3] rounded-2xl shadow-2xl px-12 py-8 text-2xl font-bold text-center z-[9999] opacity-0 pointer-events-none transition-opacity" style="transform:translate(-50%,-50%)" role="alert" aria-live="polite">Correto! Você ganhou um turno extra!</div>
     <div id="end-screen" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#181f2a]/[.96] flex flex-col items-center justify-center z-[2000] gap-8 animate-fadeIn">
         <div id="final-scoreboard" class="bg-[#181f2a]/[.97] rounded-2xl shadow-2xl border-2 border-[#eebbc3] px-12 pt-8 pb-6 min-w-[320px] max-w-[420px] flex flex-col items-center gap-4 mb-3"></div>
         <h2 id="winner-text" class="text-[#ffd6e0] text-2xl font-bold mb-3 text-center drop-shadow"></h2>
         <button id="play-again-btn" class="mt-4 px-9 py-3 text-lg rounded-xl bg-[#eebbc3] text-[#232946] font-semibold shadow-md hover:bg-[#ffd6e0] transition">Jogar Novamente</button>
     </div>
-    <button id="about-btn" class="fixed left-4 bottom-4 px-6 py-2 text-base rounded-xl bg-[#181f2a]/[.92] text-[#eebbc3] border border-[#eebbc3] shadow-lg font-medium hover:bg-[#2d3250] hover:border-[#ffd6e0] hover:text-[#ffd6e0] transition z-50">Sobre</button>
+    <button id="about-btn" class="fixed left-4 bottom-4 px-6 py-2 text-base rounded-xl bg-[#181f2a]/[.92] text-[#eebbc3] border border-[#eebbc3] shadow-lg font-medium hover:bg-[#2d3250] hover:border-[#ffd6e0] hover:text-[#ffd6e0] transition z-50" aria-haspopup="dialog" aria-expanded="false">Sobre</button>
 
-    <div id="about-modal" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#181f2a]/[.96] flex flex-col items-center justify-center z-[2000] animate-fadeIn">
-        <div class="bg-[#181f2a]/[.97] rounded-3xl shadow-2xl border-2 border-[#eebbc3] p-8 min-w-[320px] max-w-[500px] relative">
-            <h2 class="text-2xl font-bold text-[#eebbc3] mb-4 drop-shadow">Sobre o Jogo</h2>
+    <div id="about-modal" class="hidden fixed top-0 left-0 w-screen h-screen bg-[#181f2a]/[.96] flex flex-col items-center justify-center z-[2000] animate-fadeIn" role="dialog" aria-modal="true" aria-labelledby="about-title">
+        <div class="bg-[#181f2a]/[.97] rounded-3xl shadow-2xl border-2 border-[#eebbc3] p-8 min-w-[320px] max-w-[500px] relative" role="document">
+            <h2 id="about-title" class="text-2xl font-bold text-[#eebbc3] mb-4 drop-shadow">Sobre o Jogo</h2>
             <div class="text-white space-y-4">
                 <p class="text-lg">Este jogo foi criado com o objetivo de ensinar e reforçar os princípios da Restauração do Evangelho de Jesus Cristo de maneira divertida e interativa.</p>
                 <p>Através da mecânica de memória, queremos incentivar famílias, jovens e crianças a se lembrarem de eventos, símbolos e ensinamentos importantes relacionados à Primeira Visão, ao profeta Joseph Smith e à restauração da Igreja de Jesus Cristo na Terra.</p>
@@ -60,14 +69,14 @@
                 <div class="mt-8">
                     <h3 class="text-[#eebbc3] text-lg font-semibold mb-2">Criação e Desenvolvimento</h3>
                     <p>Projeto idealizado e desenvolvido por Edmozer Cavalcante.</p>
-                    <p>Saiba mais ou entre em contato: <a href="https://www.linkedin.com/in/edmozer-cavalcante/" target="_blank" class="text-[#eebbc3] hover:text-[#ffd6e0] underline transition">LinkedIn</a></p>
+                    <p>Saiba mais ou entre em contato: <a href="https://www.linkedin.com/in/edmozer-cavalcante/" target="_blank" rel="noopener noreferrer" class="text-[#eebbc3] hover:text-[#ffd6e0] underline transition">LinkedIn</a></p>
                 </div>
 
                 <div class="mt-6">
                     <h3 class="text-[#eebbc3] text-lg font-semibold mb-2">Recursos Inspiradores</h3>
                     <ul class="list-disc list-inside space-y-1 ml-2">
-                        <li><a href="https://www.churchofjesuschrist.org/study/manual/the-restoration?lang=por" target="_blank" class="text-[#eebbc3] hover:text-[#ffd6e0] underline transition">A Restauração</a></li>
-                        <li><a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics/first-vision?lang=por" target="_blank" class="text-[#eebbc3] hover:text-[#ffd6e0] underline transition">A Primeira Visão</a></li>
+                        <li><a href="https://www.churchofjesuschrist.org/study/manual/the-restoration?lang=por" target="_blank" rel="noopener noreferrer" class="text-[#eebbc3] hover:text-[#ffd6e0] underline transition">A Restauração</a></li>
+                        <li><a href="https://www.churchofjesuschrist.org/study/manual/gospel-topics/first-vision?lang=por" target="_blank" rel="noopener noreferrer" class="text-[#eebbc3] hover:text-[#ffd6e0] underline transition">A Primeira Visão</a></li>
                     </ul>
                 </div>
 

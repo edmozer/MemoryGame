@@ -395,11 +395,13 @@ const techArrow = toggleTechBtn.querySelector('span');
 aboutBtn.addEventListener('click', () => {
     aboutModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
+    aboutBtn.setAttribute('aria-expanded', 'true');
 });
 
 closeAboutBtn.addEventListener('click', () => {
     aboutModal.classList.add('hidden');
     document.body.style.overflow = '';
+    aboutBtn.setAttribute('aria-expanded', 'false');
 });
 
 // Fecha o modal ao clicar fora dele
