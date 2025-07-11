@@ -62,21 +62,28 @@ function createBoard() {
 function renderBoard() {
     let cols = Math.ceil(Math.sqrt(numPairs * 2));
     let rows = Math.ceil((numPairs * 2) / cols);
-    boardDiv.className = 'grid gap-2 bg-transparent w-full h-full';
-    boardDiv.style.justifyContent = '';
-    boardDiv.style.width = '';
-    boardDiv.style.height = '';
-    boardDiv.style.maxWidth = '';
-    boardDiv.style.maxHeight = '';
-    boardDiv.style.overflow = '';
-    boardDiv.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
-    boardDiv.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
+    
+    // Ajusta o número de colunas para evitar linhas com 1-2 cartas
+    while ((numPairs * 2) % cols <= 2 && (numPairs * 2) % cols !== 0) {
+        cols++;
+    }
+    rows = Math.ceil((numPairs * 2) / cols);
+    
+    boardDiv.className = 'grid gap-2 bg-transparent';
+    boardDiv.style.width = '100%';
+    boardDiv.style.aspectRatio = `${cols}/${rows}`; // Mantém proporção do container
+    boardDiv.style.maxWidth = '90vmin'; // Limita tamanho máximo
+    boardDiv.style.margin = '0 auto';
+    boardDiv.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    boardDiv.style.gridAutoRows = '1fr'; // Cada célula com mesma altura
     boardDiv.innerHTML = '';
 
     for (let i = 0; i < board.length; i++) {
         const card = document.createElement('div');
-        card.className = `memory-card aspect-square rounded-xl bg-[#232946] shadow-md select-none transition-all flex`;
-        // Remove qualquer ajuste manual de tamanho
+        card.className = 'memory-card rounded-xl bg-[#232946] shadow-md select-none transition-all flex items-center justify-center';
+        card.style.width = '100%';
+        card.style.height = '100%';
+        card.style.aspectRatio = '1/1'; // Força proporção quadrada
         if (matched[i]) card.classList.add('matched');
         let img = document.createElement('img');
         img.draggable = false;
@@ -246,22 +253,56 @@ function startGame() {
 }
 
 function ajustarGridBoard(numCards) {
-  const board = document.getElementById('board');
-  if (!board) return;
-  // Para poucos cards, grid mais "apertado" para cards grandes
-  let bestCols = 1, bestRows = numCards, bestSize = 0;
-  const boardSize = board.offsetWidth || 600;
-  for (let cols = 1; cols <= numCards; cols++) {
-    const rows = Math.ceil(numCards / cols);
-    const cardSize = Math.min(boardSize / cols, boardSize / rows);
-    if (cardSize > bestSize) {
-      bestSize = cardSize;
-      bestCols = cols;
-      bestRows = rows;
+    const board = document.getElementById('board');
+    const gameArea = document.getElementById('game-area');
+    if (!board || !gameArea) return;
+
+    // Começa com o número ideal de colunas (raiz quadrada arredondada para cima)
+    let columns = Math.ceil(Math.sqrt(numCards));
+    
+    // Ajusta o número de colunas para evitar linhas com 1-2 cartas
+    while (numCards % columns <= 2 && numCards % columns !== 0) {
+        columns++;
     }
-  }
-  board.style.gridTemplateColumns = `repeat(${bestCols}, 1fr)`;
-  board.style.gridTemplateRows = `repeat(${bestRows}, 1fr)`;
+    
+    // Calcula o número de linhas
+    const rows = Math.ceil(numCards / columns);
+
+    // Calcula as dimensões disponíveis (considerando margens e outros elementos)
+    const footerHeight = 80; // Altura aproximada do footer
+    const topMargin = 80; // Margem do topo aumentada
+    const bottomMargin = 40; // Margem inferior
+    const availableHeight = window.innerHeight - footerHeight - topMargin - bottomMargin;
+    const availableWidth = window.innerWidth * 0.95; // 95% da largura da tela
+
+    // Calcula o tamanho ideal das cartas baseado no espaço disponível
+    const maxCardWidth = Math.floor(availableWidth / columns);
+    const maxCardHeight = Math.floor(availableHeight / rows);
+    const cardSize = Math.min(maxCardWidth, maxCardHeight);
+
+    // Calcula as dimensões totais do grid
+    const totalWidth = cardSize * columns;
+    const totalHeight = cardSize * rows;
+
+    // Aplica os estilos para maximizar o uso do espaço
+    gameArea.style.padding = '1rem';
+    gameArea.style.paddingTop = `${topMargin}px`; // Espaço superior
+    gameArea.style.paddingBottom = `${footerHeight + bottomMargin}px`; // Espaço para o footer
+
+    board.style.display = 'grid';
+    board.style.gap = '0.75rem';
+    board.style.width = `${totalWidth}px`;
+    board.style.height = `${totalHeight}px`;
+    board.style.gridTemplateColumns = `repeat(${columns}, ${cardSize}px)`;
+    board.style.gridAutoRows = `${cardSize}px`;
+    board.style.justifyContent = 'center';
+    board.style.alignContent = 'center';
+    board.style.margin = '0 auto';
+
+    // Debug
+    console.log(`Grid Layout: ${columns}x${rows} (${numCards} cards)`);
+    console.log(`Card Size: ${cardSize}px`);
+    console.log(`Container: ${cardSize * columns}px x ${cardSize * rows}px`);
 }
 
 // Exemplo de uso: chame ajustarGridBoard(cards.length) sempre que o board for montado

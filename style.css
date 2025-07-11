@@ -22,6 +22,14 @@
 #game-area {
   position: relative;
   overflow: hidden;
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 #board {
   background: transparent;
