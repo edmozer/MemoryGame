@@ -50,40 +50,6 @@ function resetTimer() {
     finalTime = '';
 }
 
-// Validação do número de pares
-const cardsInput = document.getElementById('cards');
-cardsInput.addEventListener('input', function() {
-    let value = parseInt(this.value);
-    if (isNaN(value)) {
-        this.value = 8; // valor padrão
-        numPairs = 8;
-    } else {
-        // Força o valor entre 2 e 25
-        if (value < 2) {
-            this.value = 2;
-            numPairs = 2;
-        } else if (value > 25) {
-            this.value = 25;
-            numPairs = 25;
-        } else {
-            numPairs = value;
-        }
-    }
-});
-
-// Previne que o usuário digite valores inválidos
-cardsInput.addEventListener('keydown', function(e) {
-    // Permite apenas: números, backspace, delete, setas
-    if (!((e.key >= '0' && e.key <= '9') || 
-          e.key === 'Backspace' || 
-          e.key === 'Delete' || 
-          e.key === 'ArrowLeft' || 
-          e.key === 'ArrowRight' || 
-          e.key === 'Tab')) {
-        e.preventDefault();
-    }
-});
-
 const mainMenu = document.getElementById('main-menu');
 const gameArea = document.getElementById('game-area');
 const endScreen = document.getElementById('end-screen');
@@ -273,8 +239,10 @@ function checkMatch() {
         setTimeout(() => {
             flipped = [];
             renderBoard();
-            // Próximo jogador
-            currentPlayer = (currentPlayer + 1) % numPlayers;
+            // Próximo jogador (exceto no modo single player)
+            if (numPlayers > 1) {
+                currentPlayer = (currentPlayer + 1) % numPlayers;
+            }
             renderScoreboard();
             renderTurn();
             lockBoard = false;
@@ -350,10 +318,9 @@ function startGame() {
     // Inicia o timer se for modo single player
     startTimer();
     
-    // O footer-scoreboard agora é controlado pela classe .active do game-area
     document.getElementById('restart-btn').style.display = 'block';
-    ajustarGridBoard(numPairs * 2); // Primeiro ajusta o grid
-    renderBoard(); // Depois renderiza as cartas
+    ajustarGridBoard(numPairs * 2);
+    renderBoard();
     renderScoreboard();
     renderTurn();
 }
@@ -429,18 +396,18 @@ document.getElementById('start-btn').onclick = startGame;
 document.getElementById('restart-btn').onclick = () => {
     mainMenu.classList.remove('hidden');
     gameArea.classList.add('hidden');
-    gameArea.classList.remove('active'); // Isso já vai ocultar o footer-scoreboard
+    gameArea.classList.remove('active');
     endScreen.classList.add('hidden');
     document.getElementById('restart-btn').style.display = 'none';
-    resetTimer(); // Reseta o timer
+    resetTimer();
 };
 document.getElementById('play-again-btn').onclick = () => {
     mainMenu.classList.remove('hidden');
     gameArea.classList.add('hidden');
-    gameArea.classList.remove('active'); // Isso já vai ocultar o footer-scoreboard
+    gameArea.classList.remove('active');
     endScreen.classList.add('hidden');
     document.getElementById('restart-btn').style.display = 'none';
-    resetTimer(); // Reseta o timer
+    resetTimer();
 };
 
 
@@ -486,13 +453,11 @@ const techArrow = toggleTechBtn.querySelector('span');
 aboutBtn.addEventListener('click', () => {
     aboutModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-    aboutBtn.setAttribute('aria-expanded', 'true');
 });
 
 closeAboutBtn.addEventListener('click', () => {
     aboutModal.classList.add('hidden');
     document.body.style.overflow = '';
-    aboutBtn.setAttribute('aria-expanded', 'false');
 });
 
 // Fecha o modal ao clicar fora dele
