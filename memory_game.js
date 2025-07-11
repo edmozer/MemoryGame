@@ -60,30 +60,37 @@ function createBoard() {
 }
 
 function renderBoard() {
-    let cols = Math.ceil(Math.sqrt(numPairs * 2));
-    let rows = Math.ceil((numPairs * 2) / cols);
-    
-    // Ajusta o número de colunas para evitar linhas com 1-2 cartas
-    while ((numPairs * 2) % cols <= 2 && (numPairs * 2) % cols !== 0) {
-        cols++;
-    }
-    rows = Math.ceil((numPairs * 2) / cols);
-    
-    boardDiv.className = 'grid gap-2 bg-transparent';
-    boardDiv.style.width = '100%';
-    boardDiv.style.aspectRatio = `${cols}/${rows}`; // Mantém proporção do container
-    boardDiv.style.maxWidth = '90vmin'; // Limita tamanho máximo
-    boardDiv.style.margin = '0 auto';
-    boardDiv.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-    boardDiv.style.gridAutoRows = '1fr'; // Cada célula com mesma altura
+    // Preserva os estilos existentes do grid
+    const currentStyles = {
+        display: boardDiv.style.display,
+        gap: boardDiv.style.gap,
+        width: boardDiv.style.width,
+        height: boardDiv.style.height,
+        gridTemplateColumns: boardDiv.style.gridTemplateColumns,
+        gridAutoRows: boardDiv.style.gridAutoRows,
+        justifyContent: boardDiv.style.justifyContent,
+        alignContent: boardDiv.style.alignContent,
+        margin: boardDiv.style.margin
+    };
+
+    // Limpa o conteúdo
     boardDiv.innerHTML = '';
+
+    // Reaplica os estilos preservados
+    Object.assign(boardDiv.style, currentStyles);
 
     for (let i = 0; i < board.length; i++) {
         const card = document.createElement('div');
-        card.className = 'memory-card rounded-xl bg-[#232946] shadow-md select-none transition-all flex items-center justify-center';
-        card.style.width = '100%';
-        card.style.height = '100%';
-        card.style.aspectRatio = '1/1'; // Força proporção quadrada
+        card.className = 'memory-card rounded-xl bg-[#232946] shadow-md select-none transition-all';
+        Object.assign(card.style, {
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            aspectRatio: '1/1',
+            boxSizing: 'border-box'
+        });
         if (matched[i]) card.classList.add('matched');
         let img = document.createElement('img');
         img.draggable = false;
@@ -94,6 +101,16 @@ function renderBoard() {
         } else {
             img.src = backImage;
         }
+        
+        // Garante que a imagem mantenha as proporções corretas
+        Object.assign(img.style, {
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            borderRadius: 'inherit',
+            pointerEvents: 'none'
+        });
+
         card.appendChild(img);
         card.addEventListener('click', () => handleCardClick(i));
         boardDiv.appendChild(card);
@@ -246,10 +263,10 @@ function startGame() {
     gameArea.classList.add('active');
     // O footer-scoreboard agora é controlado pela classe .active do game-area
     document.getElementById('restart-btn').style.display = 'block';
-    renderBoard();
+    ajustarGridBoard(numPairs * 2); // Primeiro ajusta o grid
+    renderBoard(); // Depois renderiza as cartas
     renderScoreboard();
     renderTurn();
-    ajustarGridBoard(numPairs * 2); // Ajusta o grid do board
 }
 
 function ajustarGridBoard(numCards) {
@@ -289,15 +306,22 @@ function ajustarGridBoard(numCards) {
     gameArea.style.paddingTop = `${topMargin}px`; // Espaço superior
     gameArea.style.paddingBottom = `${footerHeight + bottomMargin}px`; // Espaço para o footer
 
-    board.style.display = 'grid';
-    board.style.gap = '0.75rem';
-    board.style.width = `${totalWidth}px`;
-    board.style.height = `${totalHeight}px`;
-    board.style.gridTemplateColumns = `repeat(${columns}, ${cardSize}px)`;
-    board.style.gridAutoRows = `${cardSize}px`;
-    board.style.justifyContent = 'center';
-    board.style.alignContent = 'center';
-    board.style.margin = '0 auto';
+    // Define uma classe com os estilos base do board
+    board.className = 'game-board';
+    
+    // Aplica os estilos calculados
+    Object.assign(board.style, {
+        display: 'grid',
+        gap: '0.75rem',
+        width: `${totalWidth}px`,
+        height: `${totalHeight}px`,
+        gridTemplateColumns: `repeat(${columns}, ${cardSize}px)`,
+        gridAutoRows: `${cardSize}px`,
+        justifyContent: 'center',
+        alignContent: 'center',
+        margin: '0 auto',
+        boxSizing: 'border-box'
+    });
 
     // Debug
     console.log(`Grid Layout: ${columns}x${rows} (${numCards} cards)`);
